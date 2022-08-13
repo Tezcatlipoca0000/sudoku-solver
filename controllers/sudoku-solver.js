@@ -4,6 +4,7 @@ class SudokuSolver {
     // check it to see if it has 81 valid characters
     // 1-9 and . 
     // return true or false
+    let re = /[^1-9|^\.] /g;
     if (puzzleString.length != 81) {
       return false;
     }
@@ -15,7 +16,7 @@ class SudokuSolver {
   }
 
   checkColPlacement(puzzleString, row, column, value) {
-
+    // i = col-1 i+=9
   }
 
   checkRegionPlacement(puzzleString, row, column, value) {
@@ -37,5 +38,9 @@ module.exports = SudokuSolver;
 { "valid": false, "conflict": [ "row", "column" ] }
 { "valid": false, "conflict": [ "column", "region" ] }
 { "valid": true }
+
+{ "error": "Expected puzzle to be 81 characters long" }
+{ "error": "Invalid characters in puzzle" }
+{ "error": "Puzzle cannot be solved" }
 
 */
