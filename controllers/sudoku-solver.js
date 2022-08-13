@@ -4,9 +4,12 @@ class SudokuSolver {
     // check it to see if it has 81 valid characters
     // 1-9 and . 
     // return true or false
-    let re = /[^1-9|^\.] /g;
+    let re = /[^1-9]|[^\.]/g;
     if (puzzleString.length != 81) {
       return false;
+    }
+    if (re.test(puzzleString)) {
+      console.log('re test positive ');
     }
     return true;
   }
