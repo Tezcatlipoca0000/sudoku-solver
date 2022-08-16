@@ -16,12 +16,8 @@ class SudokuSolver {
   }
 
   checkRowPlacement(puzzleString, row, column, value) {
-    // i = ((row * 9) - 9); ((row * 9) + 9); i++
-    console.log('the loop ', row, (row * 9) - 9, (row * 9) );
     let answer = true;
     for (let i = (row * 9) - 9; i < (row * 9); i++) {
-      //console.log(i);
-      console.log('tst row check ', puzzleString[i], value, i);
       if (puzzleString[i] == value) answer = false;
     }
     return answer;
@@ -36,11 +32,12 @@ class SudokuSolver {
   }
 
   solve(puzzleString) {
-    // this points to SudokuSolver >> this.validate()
-    let row = 0,
-        col = 0,
-        solvedPuzzle = puzzleString;
+    console.log('begin solving ', puzzleString);
     for (let i = 0; puzzleString.length; i++) {
+      let row = 0,
+          col = 0,
+          rowSol = [];
+
       if (puzzleString[i] === '.') {
 
         if (i < 9) {
@@ -72,15 +69,12 @@ class SudokuSolver {
           col = (i + 1) - 72;
         }
 
-        let solutions = [];
         for (let j = 1; j < 10; j++) {
-          console.log('tst this. ', this.checkRowPlacement(puzzleString, row, col, j) );
           if (this.checkRowPlacement(puzzleString, row, col, j)) {
-            solutions.push(j);
-            //solvedPuzzle[i] = j;
+            rowSol.push(j);
           }
         }
-        console.log(`solutions for row: ${row}, col: ${col} --- ${solutions}`);
+        console.log(`solutions for row: ${row} col: ${col} --- ${rowSol}`);
 
       }
 
