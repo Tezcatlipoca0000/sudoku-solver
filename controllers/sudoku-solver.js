@@ -17,6 +17,14 @@ class SudokuSolver {
 
   checkRowPlacement(puzzleString, row, column, value) {
     // i = ((row * 9) - 9); ((row * 9) + 9); i++
+    console.log('the loop ', row, (row * 9) - 9, (row * 9) );
+    let answer = true;
+    for (let i = (row * 9) - 9; i < (row * 9); i++) {
+      //console.log(i);
+      console.log('tst row check ', puzzleString[i], value, i);
+      if (puzzleString[i] == value) answer = false;
+    }
+    return answer;
   }
 
   checkColPlacement(puzzleString, row, column, value) {
@@ -64,12 +72,18 @@ class SudokuSolver {
           col = (i + 1) - 72;
         }
 
+        let solutions = [];
         for (let j = 1; j < 10; j++) {
+          console.log('tst this. ', this.checkRowPlacement(puzzleString, row, col, j) );
           if (this.checkRowPlacement(puzzleString, row, col, j)) {
-            solvedPuzzle[i] = j;
+            solutions.push(j);
+            //solvedPuzzle[i] = j;
           }
         }
+        console.log(`solutions for row: ${row}, col: ${col} --- ${solutions}`);
+
       }
+
     }
   }
 }
