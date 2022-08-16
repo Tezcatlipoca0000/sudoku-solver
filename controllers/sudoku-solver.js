@@ -43,25 +43,60 @@ class SudokuSolver {
         VII = [54, 55, 56, 63, 64, 65, 72, 73, 74],
         VIII = [57, 58, 59, 66, 67, 68, 75, 76, 77],
         IX = [60, 61, 62, 69, 70, 71, 78, 79, 80],
+        capturedReg = [];
 
     if (column < 4 && row < 4) {
       reg = 1;
+      for (let i of I) {
+        capturedReg.push(puzzleString[i]);
+      }
     } else if (column > 3 && column < 7 && row < 4) {
       reg = 2;
+      for (let i of II) {
+        capturedReg.push(puzzleString[i]);
+      }
     } else if (column > 6 && row < 4) {
       reg = 3;
+      for (let i of III) {
+        capturedReg.push(puzzleString[i]);
+      }
     } else if (column < 4 && row > 3 && row < 7) {
       reg = 4;
+      for (let i of IV) {
+        capturedReg.push(puzzleString[i]);
+      }
     } else if (column > 3 && column < 7 && row > 3 && row < 7) {
       reg = 5;
+      for (let i of V) {
+        capturedReg.push(puzzleString[i]);
+      }
     } else if (column > 6 && row > 3 && row < 7) {
       reg = 6;
+      for (let i of VI) {
+        capturedReg.push(puzzleString[i]);
+      }
     } else if (column < 4 && row > 6) {
       reg = 7;
+      for (let i of VII) {
+        capturedReg.push(puzzleString[i]);
+      }
     } else if (column > 3 && column < 7 && row > 6) {
       reg = 8;
+      for (let i of VIII) {
+        capturedReg.push(puzzleString[i]);
+      }
     } else if (column > 6 && row > 6) {
       reg = 9;
+      for (let i of IX) {
+        capturedReg.push(puzzleString[i]);
+      }
+    }
+    //console.log('tst reg ', reg, capturedReg, value);
+
+    if (capturedReg.includes(`${value}`)) {
+      return false
+    } else {
+      return true
     }
   }
 
@@ -118,6 +153,13 @@ class SudokuSolver {
           }
         }
         console.log(`col solutions for row: ${row} col: ${col} --- ${colSol}`);
+
+        for (let j = 1; j < 10; j++) {
+          if (this.checkRegionPlacement(puzzleString, row, col, j)) {
+            regSol.push(j);
+          }
+        }
+        console.log(`reg solutions for row: ${row} col: ${col} --- ${regSol}`);
 
       }
 
