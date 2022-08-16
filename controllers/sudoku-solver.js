@@ -29,7 +29,48 @@ class SudokuSolver {
 
   solve(puzzleString) {
     // this points to SudokuSolver >> this.validate()
+    let row = 0,
+        col = 0,
+        solvedPuzzle = puzzleString;
+    for (let i = 0; puzzleString.length; i++) {
+      if (puzzleString[i] === '.') {
 
+        if (i < 9) {
+          row = 1;
+          col = i + 1;
+        } else if (i > 8 && i < 18) {
+          row = 2;
+          col = (i + 1) - 9;
+        } else if (i > 17 && i < 27) {
+          row = 3;
+          col = (i + 1) - 18;
+        } else if (i > 26 && i < 36) {
+          row = 4;
+          col = (i + 1) - 27;
+        } else if (i > 35 && i < 45) {
+          row = 5;
+          col = (i + 1) - 36;
+        } else if (i > 44 && i < 54) {
+          row = 6;
+          col = (i + 1) - 45;
+        } else if (i > 53 && i < 63) {
+          row = 7;
+          col = (i + 1) - 54;
+        } else if (i > 62 && i < 72) {
+          row = 8;
+          col = (i + 1) - 63;
+        } else if (i > 71 && i < 81) {
+          row = 9;
+          col = (i + 1) - 72;
+        }
+
+        for (let j = 1; j < 10; j++) {
+          if (this.checkRowPlacement(puzzleString, row, col, j)) {
+            solvedPuzzle[i] = j;
+          }
+        }
+      }
+    }
   }
 }
 
