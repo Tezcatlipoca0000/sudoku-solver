@@ -4,18 +4,19 @@ class SudokuSolver {
     // check it to see if it has 81 valid characters
     // 1-9 and . 
     // return true or false
-    let re = /[^1-9]|[^\.]/g;
-    if (puzzleString.length != 81) {
-      return false;
-    }
-    if (re.test(puzzleString)) {
-      console.log('re test positive ');
+    let re = /[^1-9|^\.]/;
+    if (puzzleString.length != 81) return false;
+    for (let i = 0; i < puzzleString.length; i++) {
+      if (re.test(puzzleString[i])) {
+        //console.log('re test 2 negative ', re.source, puzzleString[i]);
+        return false;
+      }
     }
     return true;
   }
 
   checkRowPlacement(puzzleString, row, column, value) {
-    
+    // i = ((row * 9) - 9); ((row * 9) + 9); i++
   }
 
   checkColPlacement(puzzleString, row, column, value) {
