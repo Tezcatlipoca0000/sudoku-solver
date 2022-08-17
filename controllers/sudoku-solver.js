@@ -5,7 +5,7 @@ class SudokuSolver {
     // 1-9 and . 
     // return true or false
     let re = /[^1-9|^\.]/;
-    if (puzzleString.length != 81) return false;
+    if (puzzleString.length != 81) return 'not81';
     for (let i = 0; i < puzzleString.length; i++) {
       if (re.test(puzzleString[i])) {
         //console.log('re test 2 negative ', re.source, puzzleString[i]);
