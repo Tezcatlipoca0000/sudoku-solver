@@ -101,8 +101,10 @@ class SudokuSolver {
   }
 
   solve(puzzleString) {
+    let solvedString = '',
+        tryAgain = false;
     console.log('begin solving ', puzzleString);
-    for (let i = 0; puzzleString.length; i++) {
+    for (let i = 0; i < puzzleString.length; i++) {
       let row = 0,
           col = 0,
           rowSol = [],
@@ -145,25 +147,50 @@ class SudokuSolver {
             rowSol.push(j);
           }
         }
-        console.log(`row solutions for row: ${row} col: ${col} --- ${rowSol}`);
+        console.log(`row solutions for row: ${row} col: ${col} --- ${rowSol} ||| ${i}`);
 
         for (let j = 1; j < 10; j++) {
           if (this.checkColPlacement(puzzleString, row, col, j)) {
             colSol.push(j);
           }
         }
-        console.log(`col solutions for row: ${row} col: ${col} --- ${colSol}`);
+        console.log(`col solutions for row: ${row} col: ${col} --- ${colSol} ||| ${i}`);
 
         for (let j = 1; j < 10; j++) {
           if (this.checkRegionPlacement(puzzleString, row, col, j)) {
             regSol.push(j);
           }
         }
-        console.log(`reg solutions for row: ${row} col: ${col} --- ${regSol}`);
+        console.log(`reg solutions for row: ${row} col: ${col} --- ${regSol} ||| ${i}`);
 
+        let matched = [];
+        rowSol.forEach(n => {
+          if (colSol.includes(n) && regSol.includes(n)) matched.push(n);
+        });
+        console.log(`matched solutions for row: ${row} col: ${col} --- ${matched} ||| ${i}`);
+
+        if (matched.length === 1) {
+          console.log('matched only with 1 num');
+          solvedString += matched[0];
+        } else if (matched.length > 1) {
+          tryAgain = true;
+          solvedString += '.';
+        } else {
+          solvedString += '.';
+        }
+
+      } else {
+        solvedString += puzzleString[i]
       }
-
     }
+
+    console.log('finished the loop ', solvedString, 'tryagain? ', tryAgain);
+    if (tryAgain) {
+      this.solve(solvedString);
+    } else {
+      console.log('finishedddddd', solvedString);
+    }
+
   }
 }
 
