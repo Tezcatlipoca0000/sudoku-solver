@@ -186,7 +186,7 @@ class SudokuSolver {
 
     console.log('finished the loop ', solvedString, 'tryagain? ', tryAgain);
     if (tryAgain) {
-      this.solve(solvedString);
+      return this.solve(solvedString);
     } else {
       console.log('finishedddddd', solvedString);
       if (solvedString.includes('.')) {

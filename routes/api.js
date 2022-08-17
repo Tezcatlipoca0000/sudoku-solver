@@ -16,5 +16,7 @@ module.exports = function (app) {
       let valid = solver.validate(req.body.puzzle);
       console.log('valid ', valid);
       let solution = solver.solve(req.body.puzzle);
+      console.log('the server solution ', solution);
+      res.json({solution: solution});
     });
 };
