@@ -14,7 +14,7 @@ module.exports = function (app) {
   app.route('/api/solve')
     .post((req, res) => {
       let valid = solver.validate(req.body.puzzle);
-      console.log('oiiiiii', valid);
-      solver.solve(req.body.puzzle);
+      console.log('valid ', valid);
+      let solution = solver.solve(req.body.puzzle);
     });
 };

@@ -189,6 +189,12 @@ class SudokuSolver {
       this.solve(solvedString);
     } else {
       console.log('finishedddddd', solvedString);
+      if (solvedString.includes('.')) {
+        console.log('impossible ', solvedString);
+        return 'Imposible';
+      } else {
+        return solvedString;
+      }
     }
 
   }
