@@ -16,14 +16,23 @@ class SudokuSolver {
   }
 
   checkRowPlacement(puzzleString, row, column, value) {
-    let answer = true;
-
-    // Is there another value in that row?
-    for (let i = (row * 9) - 9; i < (row * 9); i++) {
-      if (puzzleString[i] == value) answer = false;
+    let answer = true,
+        idx = (row * 9) - (10 - column);
+  
+    if (puzzleString[idx] === '.') {
+      // Is there another number same as value in that row?
+      for (let i = (row * 9) - 9; i < (row * 9); i++) {
+        if (puzzleString[i] == value) answer = false;
+      }
+    } else {
+      for (let i = (row * 9) - 9; i < (row * 9); i++) {
+        if (i != idx) {
+          if (puzzleString[i] == value) answer = false;
+        }
+      }
+      // Is there another number in that spot?
+      if (puzzleString[idx] != value) answer = false;
     }
-
-    // Is there another number in that spot?
 
     return answer;
   }
@@ -115,39 +124,39 @@ class SudokuSolver {
           rowSol = [],
           colSol = [],
           regSol = [];
+      
+      // What coordinate?
+      if (i < 9) {
+        row = 1;
+        col = i + 1;
+      } else if (i > 8 && i < 18) {
+        row = 2;
+        col = (i + 1) - 9;
+      } else if (i > 17 && i < 27) {
+        row = 3;
+        col = (i + 1) - 18;
+      } else if (i > 26 && i < 36) {
+        row = 4;
+        col = (i + 1) - 27;
+      } else if (i > 35 && i < 45) {
+        row = 5;
+        col = (i + 1) - 36;
+      } else if (i > 44 && i < 54) {
+        row = 6;
+        col = (i + 1) - 45;
+      } else if (i > 53 && i < 63) {
+        row = 7;
+        col = (i + 1) - 54;
+      } else if (i > 62 && i < 72) {
+        row = 8;
+        col = (i + 1) - 63;
+      } else if (i > 71 && i < 81) {
+        row = 9;
+        col = (i + 1) - 72;
+      }
 
       // Is it an open spot?
       if (puzzleString[i] === '.') {
-
-        // What coordinate?
-        if (i < 9) {
-          row = 1;
-          col = i + 1;
-        } else if (i > 8 && i < 18) {
-          row = 2;
-          col = (i + 1) - 9;
-        } else if (i > 17 && i < 27) {
-          row = 3;
-          col = (i + 1) - 18;
-        } else if (i > 26 && i < 36) {
-          row = 4;
-          col = (i + 1) - 27;
-        } else if (i > 35 && i < 45) {
-          row = 5;
-          col = (i + 1) - 36;
-        } else if (i > 44 && i < 54) {
-          row = 6;
-          col = (i + 1) - 45;
-        } else if (i > 53 && i < 63) {
-          row = 7;
-          col = (i + 1) - 54;
-        } else if (i > 62 && i < 72) {
-          row = 8;
-          col = (i + 1) - 63;
-        } else if (i > 71 && i < 81) {
-          row = 9;
-          col = (i + 1) - 72;
-        }
 
         // All posible solutions for row
         for (let j = 1; j < 10; j++) {
@@ -155,7 +164,7 @@ class SudokuSolver {
             rowSol.push(j);
           }
         }
-        console.log(`row solutions for row: ${row} col: ${col} --- ${rowSol} ||| ${i}`);
+        //console.log(`row solutions for row: ${row} col: ${col} --- ${rowSol} ||| ${i}`);
 
         // All posible solutions for col
         for (let j = 1; j < 10; j++) {
@@ -163,7 +172,7 @@ class SudokuSolver {
             colSol.push(j);
           }
         }
-        console.log(`col solutions for row: ${row} col: ${col} --- ${colSol} ||| ${i}`);
+        //console.log(`col solutions for row: ${row} col: ${col} --- ${colSol} ||| ${i}`);
 
         // All posible solutions for region
         for (let j = 1; j < 10; j++) {
@@ -171,14 +180,14 @@ class SudokuSolver {
             regSol.push(j);
           }
         }
-        console.log(`reg solutions for row: ${row} col: ${col} --- ${regSol} ||| ${i}`);
+        //console.log(`reg solutions for row: ${row} col: ${col} --- ${regSol} ||| ${i}`);
 
         // All matched posible solutions for coordinate
         let matched = [];
         rowSol.forEach(n => {
           if (colSol.includes(n) && regSol.includes(n)) matched.push(n);
         });
-        console.log(`matched solutions for row: ${row} col: ${col} --- ${matched} ||| ${i}`);
+        //console.log(`matched solutions for row: ${row} col: ${col} --- ${matched} ||| ${i}`);
 
         if (matched.length === 1) {
           console.log('matched only with 1 num');
@@ -194,6 +203,8 @@ class SudokuSolver {
       } else {
         // first validate
         // if not valid return impossible
+        let valRow = this.checkRowPlacement(puzzleString, row, col, puzzleString[i]);
+        console.log('tst puzzle validity row ', valRow);
         solvedString += puzzleString[i]
       }
     }
