@@ -17,9 +17,14 @@ class SudokuSolver {
 
   checkRowPlacement(puzzleString, row, column, value) {
     let answer = true;
+
+    // Is there another value in that row?
     for (let i = (row * 9) - 9; i < (row * 9); i++) {
       if (puzzleString[i] == value) answer = false;
     }
+
+    // Is there another number in that spot?
+
     return answer;
   }
 
@@ -111,8 +116,10 @@ class SudokuSolver {
           colSol = [],
           regSol = [];
 
+      // Is it an open spot?
       if (puzzleString[i] === '.') {
 
+        // What coordinate?
         if (i < 9) {
           row = 1;
           col = i + 1;
@@ -142,6 +149,7 @@ class SudokuSolver {
           col = (i + 1) - 72;
         }
 
+        // All posible solutions for row
         for (let j = 1; j < 10; j++) {
           if (this.checkRowPlacement(puzzleString, row, col, j)) {
             rowSol.push(j);
@@ -149,6 +157,7 @@ class SudokuSolver {
         }
         console.log(`row solutions for row: ${row} col: ${col} --- ${rowSol} ||| ${i}`);
 
+        // All posible solutions for col
         for (let j = 1; j < 10; j++) {
           if (this.checkColPlacement(puzzleString, row, col, j)) {
             colSol.push(j);
@@ -156,6 +165,7 @@ class SudokuSolver {
         }
         console.log(`col solutions for row: ${row} col: ${col} --- ${colSol} ||| ${i}`);
 
+        // All posible solutions for region
         for (let j = 1; j < 10; j++) {
           if (this.checkRegionPlacement(puzzleString, row, col, j)) {
             regSol.push(j);
@@ -163,6 +173,7 @@ class SudokuSolver {
         }
         console.log(`reg solutions for row: ${row} col: ${col} --- ${regSol} ||| ${i}`);
 
+        // All matched posible solutions for coordinate
         let matched = [];
         rowSol.forEach(n => {
           if (colSol.includes(n) && regSol.includes(n)) matched.push(n);
@@ -178,8 +189,11 @@ class SudokuSolver {
         } else {
           solvedString += '.';
         }
-
+      
+      // If it's not an empty spot?
       } else {
+        // first validate
+        // if not valid return impossible
         solvedString += puzzleString[i]
       }
     }
