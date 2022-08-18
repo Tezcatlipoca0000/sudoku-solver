@@ -172,8 +172,8 @@ class SudokuSolver {
         if (matched.length === 1) {
           console.log('matched only with 1 num');
           solvedString += matched[0];
-        } else if (matched.length > 1) {
           tryAgain = true;
+        } else if (matched.length > 1) {
           solvedString += '.';
         } else {
           solvedString += '.';
