@@ -8,7 +8,7 @@ module.exports = function (app) {
 
   app.route('/api/check')
     .post((req, res) => {
-      console.log('testing post check req.body ', req.body);
+      //console.log('testing post check req.body ', req.body);
       let puzzle = req.body.puzzle,
           coordinate = req.body.coordinate,
           value = req.body.value,
@@ -27,19 +27,43 @@ module.exports = function (app) {
 
       //console.log('testing post check variables ', 'puzzle', puzzle, 'coordinate', coordinate, 'value', value, 'row', row, 'col', col);
       if (!puzzle || !coordinate || !value) {
-        console.log('testing post check req fields missing');
+        //console.log('testing post check req fields missing');
         res.json({error: 'Required field(s) missing'});
       } else if (!row || !col || !re1.test(row) || !re2.test(col) || col.length > 1) {
-        console.log('testing post check invalid coordinate');
+        //console.log('testing post check invalid coordinate');
         res.json({error: 'Invalid coordinate'});
       } else if (!re2.test(value) || value.length > 1) {
-        console.log('testing post check invalid value');
+        //console.log('testing post check invalid value');
         res.json({error: 'Invalid value'});
       } else {
-        console.log('testing post check not catched by err handlers ', req.body);
-        res.json({valid: 'testing'});
-      }
+        //console.log('testing post check not catched by err handlers ', req.body);
+        let rows = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'];
+        row = row.toLowerCase();
+        rows.forEach((v, i) => {
+          if (v === row) row = i + 1;
+        });
+        //console.log('testing post check after validation ', row, col, value);
 
+        let valRow = solver.checkRowPlacement(puzzle, row, col, value),
+            valCol = solver.checkColPlacement(puzzle, row, col, value),
+            valReg = solver.checkRegionPlacement(puzzle, row, col, value),
+            valPuz = solver.validate(puzzle);
+        //console.log('the final check ', valRow, valCol, valReg, valPuz);
+
+        if (valPuz === 'not81') {
+          res.json({error: 'Expected puzzle to be 81 characters long'});
+        } else if (!valPuz) {
+          res.json({error: 'Invalid characters in puzzle'});
+        } else if (valPuz && valRow && valCol && valReg) {
+          res.json({valid: true});
+        } else {
+          let conflicted = [];
+          if (!valRow) conflicted.push('row');
+          if (!valCol) conflicted.push('column');
+          if (!valReg) conflicted.push('region');
+          res.json({valid: false, conflict: conflicted});
+        }
+      }  
 
     });
     
