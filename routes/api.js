@@ -14,19 +14,33 @@ module.exports = function (app) {
           value = req.body.value,
           re1 = /[a-i]/i,
           re2 = /[1-9]/,
-          row = coordinate.slice(0,1),
-          col = coordinate.slice(1);
+          row = 0,
+          col = 0;
 
-      console.log('testing post check variables ', 'puzzle', puzzle, 'coordinate', coordinate, 'value', value, 'row', row, 'col', col);
-      console.log('testing 2 veracity ', Boolean(coordinate), Boolean(value), Boolean(puzzle));
+      try {
+        row = coordinate.slice(0,1);
+        col = coordinate.slice(1);
+      } catch {
+        row = null;
+        col = null;
+      }
+
+      //console.log('testing post check variables ', 'puzzle', puzzle, 'coordinate', coordinate, 'value', value, 'row', row, 'col', col);
       if (!puzzle || !coordinate || !value) {
         console.log('testing post check req fields missing');
         res.json({error: 'Required field(s) missing'});
-      } else if (!row || !col) {
+      } else if (!row || !col || !re1.test(row) || !re2.test(col) || col.length > 1) {
+        console.log('testing post check invalid coordinate');
         res.json({error: 'Invalid coordinate'});
-      } else if (!re2.test(value)) {
+      } else if (!re2.test(value) || value.length > 1) {
+        console.log('testing post check invalid value');
         res.json({error: 'Invalid value'});
+      } else {
+        console.log('testing post check not catched by err handlers ', req.body);
+        res.json({valid: 'testing'});
       }
+
+
     });
     
   app.route('/api/solve')
