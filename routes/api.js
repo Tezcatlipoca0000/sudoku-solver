@@ -8,7 +8,25 @@ module.exports = function (app) {
 
   app.route('/api/check')
     .post((req, res) => {
+      console.log('testing post check req.body ', req.body);
+      let puzzle = req.body.puzzle,
+          coordinate = req.body.coordinate,
+          value = req.body.value,
+          re1 = /[a-i]/i,
+          re2 = /[1-9]/,
+          row = coordinate.match(re1),
+          col = coordinate.match(re2);
 
+      console.log('testing post check variables ', 'puzzle', puzzle, 'coordinate', coordinate, 'value', value, 'row', row, 'col', col);
+      console.log('testing 2 veracity ', Boolean(coordinate), Boolean(value), Boolean(puzzle));
+      if (!puzzle || !coordinate || !value) {
+        console.log('testing post check req fields missing');
+        res.json({error: 'Required field(s) missing'});
+      } else if (!row || !col) {
+        res.json({error: 'Invalid coordinate'});
+      } else if (!re2.test(value)) {
+        res.json({error: 'Invalid value'});
+      }
     });
     
   app.route('/api/solve')
