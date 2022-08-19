@@ -137,13 +137,14 @@ class SudokuSolver {
   solve(puzzleString) {
     let solvedString = '',
         tryAgain = false;
-    console.log('begin solving ', puzzleString);
+    //console.log('begin solving ', puzzleString);
     for (let i = 0; i < puzzleString.length; i++) {
       let row = 0,
           col = 0,
           rowSol = [],
           colSol = [],
-          regSol = [];
+          regSol = [],
+          matched = [];
       
       // What coordinate?
       if (i < 9) {
@@ -203,18 +204,16 @@ class SudokuSolver {
         //console.log(`reg solutions for row: ${row} col: ${col} --- ${regSol} ||| ${i}`);
 
         // All matched posible solutions for coordinate
-        let matched = [];
         rowSol.forEach(n => {
           if (colSol.includes(n) && regSol.includes(n)) matched.push(n);
         });
         //console.log(`matched solutions for row: ${row} col: ${col} --- ${matched} ||| ${i}`);
 
+        // if matched only by 1 number write that as solved and signal to re-start at the end
         if (matched.length === 1) {
           //console.log('matched only with 1 num');
           solvedString += matched[0];
           tryAgain = true;
-        } else if (matched.length > 1) {
-          solvedString += '.';
         } else {
           solvedString += '.';
         }
@@ -236,13 +235,13 @@ class SudokuSolver {
       }
     }
 
-    console.log('finished the loop ', solvedString, 'tryagain? ', tryAgain);
+    //console.log('finished the loop ', solvedString, 'tryagain? ', tryAgain);
     if (tryAgain) {
       return this.solve(solvedString);
     } else {
-      console.log('finishedddddd', solvedString);
+      //console.log('finishedddddd', solvedString);
       if (solvedString.includes('.')) {
-        console.log('impossible ', solvedString);
+        //console.log('impossible ', solvedString);
         return 'Imposible';
       } else {
         return solvedString;
