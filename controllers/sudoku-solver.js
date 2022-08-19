@@ -1,17 +1,17 @@
 class SudokuSolver {
 
   validate(puzzleString) {
-    // check it to see if it has 81 valid characters
-    // 1-9 and . 
-    // return true or false
     let re = /[^1-9|^\.]/;
+
     if (puzzleString.length != 81) return 'not81';
+    
     for (let i = 0; i < puzzleString.length; i++) {
       if (re.test(puzzleString[i])) {
         //console.log('re test 2 negative ', re.source, puzzleString[i]);
         return false;
       }
     }
+
     return true;
   }
 
@@ -19,19 +19,12 @@ class SudokuSolver {
     let answer = true,
         idx = (row * 9) - (10 - column);
   
-    if (puzzleString[idx] === '.') {
-      // Is there another number same as value in that row?
-      for (let i = (row * 9) - 9; i < (row * 9); i++) {
+    if (puzzleString[idx] != '.' && puzzleString[idx] != value) answer = false;
+
+    for (let i = (row * 9) - 9; i < (row * 9); i++) {
+      if (i != idx) {
         if (puzzleString[i] == value) answer = false;
       }
-    } else {
-      for (let i = (row * 9) - 9; i < (row * 9); i++) {
-        if (i != idx) {
-          if (puzzleString[i] == value) answer = false;
-        }
-      }
-      // Is there another number in that spot?
-      if (puzzleString[idx] != value) answer = false;
     }
 
     return answer;
@@ -41,17 +34,12 @@ class SudokuSolver {
     let answer = true,
         idx = (row * 9) - (10 - column);
 
-    if (puzzleString[idx] === '.') {
-      for (let i = column - 1 ; i < (column + 72); i+=9) {
+    if (puzzleString[idx] != '.' && puzzleString[idx] != value) answer = false;
+    
+    for (let i = column - 1 ; i < (column + 72); i+=9) {
+      if (i != idx) {
         if (puzzleString[i] == value) answer = false;
       }
-    } else {
-      for (let i = column - 1 ; i < (column + 72); i+=9) {
-        if (i != idx) {
-          if (puzzleString[i] == value) answer = false;
-        }
-      }
-      if (puzzleString[idx] != value) answer = false;
     }
     
     return answer;
