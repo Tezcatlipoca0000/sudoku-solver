@@ -14,8 +14,8 @@ module.exports = function (app) {
           value = req.body.value,
           re1 = /[a-i]/i,
           re2 = /[1-9]/,
-          row = coordinate.match(re1),
-          col = coordinate.match(re2);
+          row = coordinate.slice(0,1),
+          col = coordinate.slice(1);
 
       console.log('testing post check variables ', 'puzzle', puzzle, 'coordinate', coordinate, 'value', value, 'row', row, 'col', col);
       console.log('testing 2 veracity ', Boolean(coordinate), Boolean(value), Boolean(puzzle));
