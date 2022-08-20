@@ -86,8 +86,8 @@ module.exports = function (app) {
           if (solution === 'Imposible') {
             res.json({error: 'Puzzle cannot be solved'});
           } else {
-            console.log('valid ', valid);
-            console.log('the server solution ', solution);
+            //console.log('valid ', valid);
+            //console.log('the server solution ', solution);
             res.json({solution: solution});
           }
           

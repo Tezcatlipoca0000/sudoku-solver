@@ -60,7 +60,7 @@ suite('Unit Tests', () => {
     test('Logic handles an invalid column placement', function() {
         let puzzle = '1.5..2.84..63.12.7.2..5.....9..1....8.2.3674.3.7.2..9.47...8..1..16....926914.37.',
             row = 1,
-            col = 10,
+            col = 0,
             val = 1;
         solver = new Solver(); 
 
@@ -68,7 +68,50 @@ suite('Unit Tests', () => {
     });
 
     test('Logic handles a valid region (3x3 grid) placement', function() {
-        
+        let puzzle = '1.5..2.84..63.12.7.2..5.....9..1....8.2.3674.3.7.2..9.47...8..1..16....926914.37.';
+        solver = new Solver();
+        let solution = solver.solve(puzzle);
+
+        assert.isString(solution, 'solution is a string');
+        assert.notInclude(solution, '.', 'solution does not include "." dots');
+        assert.lengthOf(solution, 81, 'solution has length of 81');
+    });
+
+    test('Logic handles an invalid region (3x3 grid) placement', function() {
+        let puzzle = '.1.5..2.84..63.12.7.2..5.....9..1....8.2.3674.3.7.2..9.47...8..1..16....926914.37.';
+        solver = new Solver();
+        let solution = solver.solve(puzzle);
+
+        assert.equal(solution, 'Imposible', 'solution equal "Imposible"');
+    });
+
+    test('Valid puzzle strings pass the solver', function() {
+        let puzzle = '1.5..2.84..63.12.7.2..5.....9..1....8.2.3674.3.7.2..9.47...8..1..16....926914.37.';
+        solver = new Solver();
+        let solution = solver.solve(puzzle);
+
+        assert.isString(solution, 'solution is a string');
+        assert.notInclude(solution, '.', 'solution does not include "." dots');
+        assert.lengthOf(solution, 81, 'solution has length of 81');
+    });
+
+    test('Invalid puzzle strings fail the solver', function() {
+        let puzzle = '1.5.12.84..63.12.7.2..5.....9..1....8.2.3674.3.7.2..9.47...8..1..16....926914.37.';
+        solver = new Solver();
+        let solution = solver.solve(puzzle);
+
+        assert.equal(solution, 'Imposible', 'solution equal "Imposible"');
+    });
+
+    test('Solver returns the expected solution for an incomplete puzzle', function() {
+        let puzzle = '1.5..2.84..63.12.7.2..5.....9..1....8.2.3674.3.7.2..9.47...8..1..16....926914.37.';
+        solver = new Solver();
+        let solution = solver.solve(puzzle);
+
+        assert.isString(solution, 'solution is a string');
+        assert.notInclude(solution, '.', 'solution does not include "." dots');
+        assert.lengthOf(solution, 81, 'solution has length of 81');
+        assert.equal(solution, '135762984946381257728459613694517832812936745357824196473298561581673429269145378', 'solution is equal to expected');
     });
 
 });

@@ -17,12 +17,7 @@ class SudokuSolver {
 
   checkRowPlacement(puzzleString, row, column, value) {
     let answer = true,
-        accepted = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-    
-    if (!accepted.includes(row)) answer = false;
-    if (!accepted.includes(column)) answer = false;
-
-    let idx = (row * 9) - (10 - column);
+        idx = (row * 9) - (10 - column);
   
     if (puzzleString[idx] != '.' && puzzleString[idx] != value) answer = false;
 
@@ -37,12 +32,7 @@ class SudokuSolver {
 
   checkColPlacement(puzzleString, row, column, value) {
     let answer = true,
-        accepted = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-        
-    if (!accepted.includes(row)) answer = false;
-    if (!accepted.includes(column)) answer = false;
-    
-    let idx = (row * 9) - (10 - column);
+        idx = (row * 9) - (10 - column);
 
     if (puzzleString[idx] != '.' && puzzleString[idx] != value) answer = false;
     
