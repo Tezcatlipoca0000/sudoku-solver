@@ -78,5 +78,170 @@ suite('Functional Tests', () => {
             });
     });
 
+    test('Check a puzzle placement with all fields: POST request to /api/check', function(done) {
+        chai
+            .request(server)
+            .post('/api/check')
+            .type('form')
+            .send({
+                puzzle: '..9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6..',
+                coordinate: 'a1',
+                value: '7'
+            })
+            .end(function(err, res) {
+                assert.isNull(err, 'error to post is null');
+                assert.equal(res.status, 200, 'res status is 200');
+                assert.isTrue(res.body.valid, 'response valid is true');
+                done();
+            });
+    });
+
+    test('Check a puzzle placement with single placement conflict: POST request to /api/check', function(done) {
+        chai
+            .request(server)
+            .post('/api/check')
+            .type('form')
+            .send({
+                puzzle: '..9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6..',
+                coordinate: 'a2',
+                value: '1'
+            })
+            .end(function(err, res) {
+                assert.isNull(err, 'error to post is null');
+                assert.equal(res.status, 200, 'res status is 200');
+                assert.isFalse(res.body.valid, 'response valid is false');
+                assert.property(res.body, 'conflict', 'response has property "conflict"');
+                assert.isArray(res.body.conflict, 'conflict is an array');
+                assert.lengthOf(res.body.conflict, 1, 'conflict length is 1');
+                done();
+            });
+    });
+
+    test('Check a puzzle placement with multiple placement conflicts: POST request to /api/check', function(done) {
+        chai
+            .request(server)
+            .post('/api/check')
+            .type('form')
+            .send({
+                puzzle: '..9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6..',
+                coordinate: 'a2',
+                value: '2'
+            })
+            .end(function(err, res) {
+                assert.isNull(err, 'error to post is null');
+                assert.equal(res.status, 200, 'res status is 200');
+                assert.isFalse(res.body.valid, 'response valid is false');
+                assert.property(res.body, 'conflict', 'response has property "conflict"');
+                assert.isArray(res.body.conflict, 'conflict is an array');
+                assert.lengthOf(res.body.conflict, 2, 'conflict length is 2');
+                done();
+            });
+    });
+
+    test('Check a puzzle placement with all placement conflicts: POST request to /api/check', function(done) {
+        chai
+            .request(server)
+            .post('/api/check')
+            .type('form')
+            .send({
+                puzzle: '..9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6..',
+                coordinate: 'a2',
+                value: '9'
+            })
+            .end(function(err, res) {
+                assert.isNull(err, 'error to post is null');
+                assert.equal(res.status, 200, 'res status is 200');
+                assert.isFalse(res.body.valid, 'response valid is false');
+                assert.property(res.body, 'conflict', 'response has property "conflict"');
+                assert.isArray(res.body.conflict, 'conflict is an array');
+                assert.lengthOf(res.body.conflict, 3, 'conflict length is 3');
+                done();
+            });
+    });
+
+    test('Check a puzzle placement with missing required fields: POST request to /api/check', function(done) {
+        chai
+            .request(server)
+            .post('/api/check')
+            .end(function(err, res) {
+                assert.isNull(err, 'error to post is null');
+                assert.equal(res.status, 200, 'res status is 200');
+                assert.propertyVal(res.body, 'error', 'Required field(s) missing', 'response is error: "Required field(s) missing"');
+                done();
+            });
+    });
+
+    test('Check a puzzle placement with invalid characters: POST request to /api/check', function(done) {
+        chai
+            .request(server)
+            .post('/api/check')
+            .type('form')
+            .send({
+                puzzle: 'invalid1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6..',
+                coordinate: 'a1',
+                value: '7'
+            })
+            .end(function(err, res) {
+                assert.isNull(err, 'error to post is null');
+                assert.equal(res.status, 200, 'res status is 200');
+                assert.propertyVal(res.body, 'error', 'Invalid characters in puzzle', 'response is error: "Invalid characters in puzzle"');
+                done();
+            });
+    });
+
+    test('Check a puzzle placement with incorrect length: POST request to /api/check', function(done) {
+        chai
+            .request(server)
+            .post('/api/check')
+            .type('form')
+            .send({
+                puzzle: '..9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6...',
+                coordinate: 'a1',
+                value: '7'
+            })
+            .end(function(err, res) {
+                assert.isNull(err, 'error to post is null');
+                assert.equal(res.status, 200, 'res status is 200');
+                assert.propertyVal(res.body, 'error', 'Expected puzzle to be 81 characters long', 'response is error: "Expected puzzle to be 81 characters long"');
+                done();
+            });
+    });
+
+    test('Check a puzzle placement with invalid placement coordinate: POST request to /api/check', function(done) {
+        chai
+            .request(server)
+            .post('/api/check')
+            .type('form')
+            .send({
+                puzzle: '..9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6..',
+                coordinate: 'w123',
+                value: '7'
+            })
+            .end(function(err, res) {
+                assert.isNull(err, 'error to post is null');
+                assert.equal(res.status, 200, 'res status is 200');
+                assert.propertyVal(res.body, 'error', 'Invalid coordinate', 'response is error: "Invalid coordinate"');
+                done();
+            });
+    });
+
+    test('Check a puzzle placement with invalid placement value: POST request to /api/check', function(done) {
+        chai
+            .request(server)
+            .post('/api/check')
+            .type('form')
+            .send({
+                puzzle: '..9..5.1.85.4....2432......1...69.83.9.....6.62.71...9......1945....4.37.4.3..6..',
+                coordinate: 'a1',
+                value: '97'
+            })
+            .end(function(err, res) {
+                assert.isNull(err, 'error to post is null');
+                assert.equal(res.status, 200, 'res status is 200');
+                assert.propertyVal(res.body, 'error', 'Invalid value', 'response is error: "Invalid value"');
+                done();
+            });
+    });
+
 });
 
